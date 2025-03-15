@@ -251,3 +251,35 @@ o	Predicted customers likely to churn and exported the data to Power BI.
 The Predicted Churner Dashboard was developed to analyze high-risk customers.
 
 ![image](https://github.com/user-attachments/assets/18e8dc75-7da6-45f7-a45d-b6870ea12706)
+
+
+•	378 customers were identified as at-risk churners.
+
+•	Most at-risk customers were females (246) and those aged 35-50 years.
+
+•	Customers with less than 6 months or more than 24 months tenure were more likely to churn.
+
+•	Month-to-Month contract users had the highest churn risk.
+
+•	States with the highest predicted churn included Uttar Pradesh, Maharashtra, and Tamil Nadu.
+
+These insights help businesses proactively target at-risk customers with personalized retention efforts.
+________________________________________
+## Conclusion & Business Recommendations
+
+**🔹 Key Takeaways:**
+•	Target high-risk customer segments (female users, older customers, and month-to-month subscribers).
+
+•	Improve service quality in high-churn states.
+
+•	Encourage automatic payment methods to reduce churn.
+
+•	Offer long-term contract discounts to improve retention.
+
+•	Use machine learning to proactively retain at-risk customers.
+
+By integrating SQL Server, Power BI, and Machine Learning, this project provides an end-to-end churn analysis framework, enabling data-driven decision-making for customer retention. 
+
+
+ 
+
