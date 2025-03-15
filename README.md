@@ -1,7 +1,5 @@
 # Churn-Analysis
 
-# Churn-Analysis
-
 # Introduction
 Customer churn is a major concern for businesses, especially those in subscription-based industries. Losing customers not only impacts revenue but also increases acquisition costs for new customers. This project aims to analyze and predict customer churn using a data-driven approach by integrating SQL Server for data processing, Power BI for visualization, and Machine Learning (Random Forest) for predictive modeling.
 
@@ -140,28 +138,114 @@ The final phase of the project involved developing a machine learning model to p
 
 For this, we used the Random Forest Classifier, a robust ensemble learning method that handles large datasets well and provides reliable predictions. The model was trained and tested in Jupyter Notebook using Python and the Scikit-Learn library.
 
+## 2. Data Preparation & Preprocessing
+**2.1 Loading the Data**
+The dataset was loaded from an Excel file (Prediction_Data.xlsx), specifically from the sheet vw_ChurnData, which contains information about customers who either churned or stayed. The dataset includes demographic data, service details, payment methods, and contract information.
+![image](https://github.com/user-attachments/assets/d5d52c73-e24a-47f1-a0b2-454ff45e3ca5)
+
+**2.2 Initial Exploration**
+
+The dataset contained multiple columns, including:
+•	Customer Information: Customer_ID, Gender, Age, Married, State, Number_of_Referrals
+
+•	Service Usage: Phone_Service, Internet_Service, Online_Security, Streaming_TV, Streaming_Movies
+
+•	Billing & Payment: Payment_Method, Monthly_Charge, Total_Charges, Total_Refunds, Total_Revenue
+
+•	Target Variable: Customer_Status (whether the customer churned or stayed)
+
+The first step involved removing unnecessary columns such as Customer_ID, Churn_Category, and Churn_Reason, as these were not useful for prediction.
+
+**2.3 Encoding Categorical Variables**
+Since machine learning models work with numerical data, categorical variables were converted into numerical format using Label Encoding.
+
+**2.4 Splitting Data for Training & Testing**
+The dataset was then split into training and testing sets, using an 80-20 split, to ensure that the model was trained on a large portion of the data while keeping some unseen data for evaluation.
+python
+Copy code
+from sklearn.model_selection import train_test_split
+
+**Splitting features (X) and target variable (y)**
+X = data.drop('Customer_Status', axis=1)
+y = data['Customer_Status']
+
+ **Splitting into training and testing sets (80% train, 20% test)**
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 
-## Model Building Process
-**1.	Feature Engineering**
-o	Selected key features such as Monthly Charges, Total Revenue, Payment Method, Tenure, and Contract Type.
+![image](https://github.com/user-attachments/assets/f695773e-3981-41e3-99b9-e48d721253c0)
 
-o	Encoded categorical variables using One-Hot Encoding.
+**3. Training the Random Forest Model**
+A Random Forest Classifier was selected because it performs well on structured data and is resistant to overfitting. The model was initialized with 100 decision trees (n_estimators=100) to balance accuracy and computation time.
+![image](https://github.com/user-attachments/assets/b8839d58-d2a7-4c0e-b2c1-b81d426eafbf)
 
-o	Split the data into 80% training and 20% testing.
+**4. Model Evaluation**
+To assess the model's performance, we evaluated it using:
 
-**3.	Training the Model**
-o	Used a Random Forest Classifier, known for handling large datasets with high accuracy.
+•	Confusion Matrix
 
-o	Tuned hyperparameters to improve model performance.
+•	Classification Report (Precision, Recall, and F1-score)
+![image](https://github.com/user-attachments/assets/b2653adb-2763-4af9-a82e-c58c4877e7d7)
 
-**4.	Model Evaluation**
-o	Achieved high accuracy and recall, ensuring reliable predictions.
 
-o	Evaluated using Confusion Matrix, Precision, Recall, and F1-Score.
+•	Overall accuracy: 84%
+
+•	Precision for churned customers: 78% (78% of predicted churners were actual churners)
+
+•	Recall for churned customers: 65% (65% of actual churners were correctly predicted)
+
+•	F1-score: 0.71, indicating a good balance between precision and recall
+
+**5. Feature Importance Analysis**
+To understand which factors contribute most to churn, the model's feature importance scores were analyzed and visualized.
+
+The model demonstrates strong predictive power, but further improvements could be made by fine-tuning hyperparameters.
+
+![image](https://github.com/user-attachments/assets/ac7aa23a-7daf-43c8-93ad-ca7aa05fc2d4)
+
+**Key Findings from Feature Importance**
+•	Monthly_Charge and Total_Revenue were the top predictors of churn.
+
+•	Contract Type (Month-to-Month) had a strong impact, confirming Power BI insights.
+
+•	Internet Service & Online Security were also influential, showing service quality matters.
+
+•	Payment Method (Mailed Check) contributed to higher churn risks.
+
+**6. Predicting New Customers**
+After training and evaluating the model, it was used to predict churn risk for new customers.
+
+#Load new customer data (vw_JoinData)
+new_data = pd.read_excel(file_path, sheet_name='vw_JoinData')
+
+#Encode categorical variables
+for column in new_data.select_dtypes(include=['object']).columns:
+    new_data[column] = label_encoders[column].transform(new_data[column])
+
+#Predict churn probability
+new_predictions = rf_model.predict(new_data)
+
+#Add predictions to original data
+new_data['Customer_Status_Predicted'] = new_predictions
+
+#Save results
+new_data.to_csv("Predictions.csv", index=False)
+
+7. Conclusion
+•	The Random Forest model achieved 84% accuracy in predicting customer churn.
+
+•	Monthly Charges, Contract Type, and Total Revenue were the biggest churn indicators.
+
+•	Predicted 378 high-risk customers, allowing businesses to take proactive retention measures.
+
+This data-driven approach enables companies to identify and retain at-risk customers, improving business profitability
+
+________________________________________
 
 **5.	Prediction & Export**
 o	Predicted customers likely to churn and exported the data to Power BI.
+
+
 
 # Visualizing Predicted Churn in Power BI
 The Predicted Churner Dashboard was developed to analyze high-risk customers.
